@@ -3,31 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <title>Formulario de Cliente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(to right, #f44336, #2196F3, #4CAF50, #FFEB3B);
-      background-size: 400% 400%;
-      animation: bg 10s ease infinite;
+      background-size: 300% 300%;
+      animation: fondo 10s ease infinite;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
     }
-    @keyframes bg {
+    @keyframes fondo {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
     .form-container {
       background: #fff;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      width: 100%;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
       max-width: 500px;
+      width: 100%;
     }
     h2 {
       text-align: center;
@@ -36,17 +38,17 @@
     }
     label {
       display: block;
-      margin-top: 12px;
-      font-weight: bold;
-      color: #444;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #333;
     }
     input, select {
       width: 100%;
       padding: 10px;
       margin-top: 6px;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      font-size: 14px;
+      font-size: 15px;
     }
     button {
       margin-top: 25px;
@@ -62,13 +64,32 @@
     button:hover {
       background-color: #1976D2;
     }
+    .mensaje-exito {
+      display: none;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 20px;
+        margin-top: 40px;
+      }
+      h2 {
+        font-size: 20px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="form-container">
-    <h2>📬 Envío de Cliente</h2>
-    <form action="https://formsubmit.co/instaladores@azyco.com.mx" method="POST" id="clienteForm">
-      <!-- Datos de formulario -->
+    <h2>Registro de Cliente</h2>
+    <form action="https://formsubmit.co/ajax/your@email.com" method="POST" id="clienteForm">
       <label for="cliente">Cliente</label>
       <input type="text" name="Cliente" id="cliente" required>
 
@@ -79,7 +100,7 @@
       <input type="text" name="Colonia" id="colonia" required>
 
       <label for="cp">Código Postal</label>
-      <input type="text" name="CP" id="cp" required pattern="\d{5}" title="5 dígitos">
+      <input type="text" name="CP" id="cp" required pattern="\d{5}" title="Debe tener 5 dígitos">
 
       <label for="tel1">Teléfono 1</label>
       <input type="tel" name="Teléfono 1" id="tel1" required>
@@ -98,18 +119,45 @@
       <!-- Asunto dinámico -->
       <input type="hidden" name="_subject" id="asunto">
 
+      <!-- Evita captcha y redirección -->
+      <input type="hidden" name="_captcha" value="false">
+
       <button type="submit">Enviar</button>
+
+      <div id="msgExito" class="mensaje-exito">✅ Registro exitoso. Gracias por tu envío.</div>
     </form>
   </div>
 
   <script>
     const form = document.getElementById('clienteForm');
-    const destino = document.getElementById('destino');
+    const selectDestino = document.getElementById('destino');
     const asunto = document.getElementById('asunto');
+    const mensaje = document.getElementById('msgExito');
 
-    form.addEventListener('submit', () => {
-      const seleccionado = destino.options[destino.selectedIndex].value;
-      asunto.value = `Formulario enviado a ${seleccionado}`;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Asunto dinámico basado en el select
+      const valorDestino = selectDestino.value;
+      asunto.value = `Formulario de cliente enviado a ${valorDestino}`;
+
+      // Envío AJAX con FormSubmit
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          mensaje.style.display = 'block';
+          form.reset();
+        } else {
+          alert("❌ Ocurrió un error. Intenta de nuevo.");
+        }
+      }).catch(error => {
+        alert("❌ Error de conexión.");
+        console.error(error);
+      });
     });
   </script>
 </body>
