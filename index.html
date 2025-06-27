@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario de Cliente</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f44336, #2196F3, #4CAF50, #FFEB3B);
+      background-size: 400% 400%;
+      animation: bg 10s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    @keyframes bg {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .form-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 500px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      color: #444;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background-color: #2196F3;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1976D2;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>📬 Envío de Cliente</h2>
+    <form action="https://formsubmit.co/instaladores@azyco.com.mx" method="POST" id="clienteForm">
+      <!-- Datos de formulario -->
+      <label for="cliente">Cliente</label>
+      <input type="text" name="Cliente" id="cliente" required>
+
+      <label for="calle">Calle</label>
+      <input type="text" name="Calle" id="calle" required>
+
+      <label for="colonia">Colonia</label>
+      <input type="text" name="Colonia" id="colonia" required>
+
+      <label for="cp">Código Postal</label>
+      <input type="text" name="CP" id="cp" required pattern="\d{5}" title="5 dígitos">
+
+      <label for="tel1">Teléfono 1</label>
+      <input type="tel" name="Teléfono 1" id="tel1" required>
+
+      <label for="tel2">Teléfono 2</label>
+      <input type="tel" name="Teléfono 2" id="tel2">
+
+      <label for="destino">Enviar a:</label>
+      <select name="Destino" id="destino" required>
+        <option value="">Selecciona una opción</option>
+        <option value="Periférico">Periférico</option>
+        <option value="Bélgica">Bélgica</option>
+        <option value="Artesanos">Artesanos</option>
+      </select>
+
+      <!-- Asunto dinámico -->
+      <input type="hidden" name="_subject" id="asunto">
+
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('clienteForm');
+    const destino = document.getElementById('destino');
+    const asunto = document.getElementById('asunto');
+
+    form.addEventListener('submit', () => {
+      const seleccionado = destino.options[destino.selectedIndex].value;
+      asunto.value = `Formulario enviado a ${seleccionado}`;
+    });
+  </script>
+</body>
+</html>
