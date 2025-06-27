@@ -1,55 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Formulario de Cliente</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Cliente - AZYCO</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #f44336, #2196F3, #4CAF50, #FFEB3B);
-      background-size: 300% 300%;
-      animation: fondo 10s ease infinite;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      margin: 0;
-      padding: 20px;
     }
-    @keyframes fondo {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+
     .form-container {
-      background: #fff;
-      padding: 25px 30px;
+      background-color: #fff;
+      border: 5px solid #f44336; /* Rojo borde inicial */
       border-radius: 12px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-      max-width: 500px;
+      padding: 30px;
+      max-width: 550px;
       width: 100%;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
     }
-    h2 {
+
+    .form-container h2 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #333;
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: #222;
+      font-weight: 600;
     }
+
     label {
       display: block;
       margin-top: 15px;
       font-weight: 600;
       color: #333;
     }
+
     input, select {
       width: 100%;
       padding: 10px;
       margin-top: 6px;
       border-radius: 6px;
-      border: 1px solid #ccc;
+      border: 2px solid #ccc;
       font-size: 15px;
     }
+
+    /* Bordes tipo AZYCO */
+    #cliente      { border-color: #f44336; } /* rojo */
+    #calle        { border-color: #2196F3; } /* azul */
+    #colonia      { border-color: #4CAF50; } /* verde */
+    #cp           { border-color: #FFEB3B; } /* amarillo */
+    #tel1         { border-color: #4CAF50; }
+    #tel2         { border-color: #2196F3; }
+    #pedido       { border-color: #f44336; }
+    #destino      { border-color: #FFEB3B; }
+
     button {
       margin-top: 25px;
       width: 100%;
@@ -61,9 +75,11 @@
       font-size: 16px;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #1976D2;
     }
+
     .mensaje-exito {
       display: none;
       margin-top: 20px;
@@ -78,35 +94,35 @@
     @media (max-width: 600px) {
       .form-container {
         padding: 20px;
-        margin-top: 40px;
-      }
-      h2 {
-        font-size: 20px;
+        margin-top: 30px;
       }
     }
   </style>
 </head>
 <body>
   <div class="form-container">
-    <h2>Registro de Cliente</h2>
+    <h2>Formulario de Registro</h2>
     <form action="https://formsubmit.co/ajax/your@email.com" method="POST" id="clienteForm">
       <label for="cliente">Cliente</label>
-      <input type="text" name="Cliente" id="cliente" required>
+      <input type="text" name="Cliente" id="cliente" required />
 
       <label for="calle">Calle</label>
-      <input type="text" name="Calle" id="calle" required>
+      <input type="text" name="Calle" id="calle" required />
 
       <label for="colonia">Colonia</label>
-      <input type="text" name="Colonia" id="colonia" required>
+      <input type="text" name="Colonia" id="colonia" required />
 
       <label for="cp">Código Postal</label>
-      <input type="text" name="CP" id="cp" required pattern="\d{5}" title="Debe tener 5 dígitos">
+      <input type="text" name="CP" id="cp" required pattern="\d{5}" title="Debe tener 5 dígitos" />
 
       <label for="tel1">Teléfono 1</label>
-      <input type="tel" name="Teléfono 1" id="tel1" required>
+      <input type="tel" name="Teléfono 1" id="tel1" required />
 
       <label for="tel2">Teléfono 2</label>
-      <input type="tel" name="Teléfono 2" id="tel2">
+      <input type="tel" name="Teléfono 2" id="tel2" />
+
+      <label for="pedido">Pedido</label>
+      <input type="text" name="Pedido" id="pedido" required />
 
       <label for="destino">Enviar a:</label>
       <select name="Destino" id="destino" required>
@@ -116,46 +132,42 @@
         <option value="Artesanos">Artesanos</option>
       </select>
 
-      <!-- Asunto dinámico -->
-      <input type="hidden" name="_subject" id="asunto">
-
-      <!-- Evita captcha y redirección -->
-      <input type="hidden" name="_captcha" value="false">
+      <!-- Asunto personalizado -->
+      <input type="hidden" name="_subject" id="asunto" />
+      <input type="hidden" name="_captcha" value="false" />
 
       <button type="submit">Enviar</button>
-
-      <div id="msgExito" class="mensaje-exito">✅ Registro exitoso. Gracias por tu envío.</div>
+      <div id="msgExito" class="mensaje-exito">✅ Registro exitoso, ¡gracias!</div>
     </form>
   </div>
 
   <script>
     const form = document.getElementById('clienteForm');
-    const selectDestino = document.getElementById('destino');
+    const destino = document.getElementById('destino');
     const asunto = document.getElementById('asunto');
     const mensaje = document.getElementById('msgExito');
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      // Asunto dinámico basado en el select
-      const valorDestino = selectDestino.value;
-      asunto.value = `Formulario de cliente enviado a ${valorDestino}`;
+      asunto.value = `Nuevo pedido enviado a ${destino.value}`;
 
-      // Envío AJAX con FormSubmit
       const formData = new FormData(form);
       fetch(form.action, {
         method: "POST",
         body: formData,
         headers: { 'Accept': 'application/json' }
-      }).then(response => {
+      })
+      .then(response => {
         if (response.ok) {
           mensaje.style.display = 'block';
           form.reset();
         } else {
-          alert("❌ Ocurrió un error. Intenta de nuevo.");
+          alert("❌ Ocurrió un error. Inténtalo de nuevo.");
         }
-      }).catch(error => {
-        alert("❌ Error de conexión.");
+      })
+      .catch(error => {
+        alert("❌ Error de red.");
         console.error(error);
       });
     });
